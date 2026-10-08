@@ -40,10 +40,3 @@ node scripts/validate-mqtt.js
 
 Le dossier technique est `docs/dossier.pdf` ; sa source modifiable est `docs/dossier.md`.
 
-## Avant le rendu
-
-1. Exécuter `docker compose up` et vérifier le front sur votre machine.
-2. Importer et lancer les fichiers du dossier `wokwi/`, puis renseigner le **lien public de votre simulation**. Compilation et exécution Wokwi non vérifiées ici.
-3. Joindre une vidéo de démonstration de moins de quatre minutes (guide : `docs/demo.md`).
-4. Fournir votre dépôt Git et son historique réel sur les quatre jours. L'archive fournie ne contient aucun historique Git ; aucun historique n'a été inventé.
-5. Confirmer les devis, la livraison et les essais physiques (radio, autonomie, précision). La BOM distingue les prix relevés des provisions estimées.
