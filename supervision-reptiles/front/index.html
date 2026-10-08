@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Centre reptiles — salle de garde</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <em>salle de garde</em>
+      <strong>Centre reptiles</strong>
+    </div>
+    <div class="stats">
+      <div><b id="k-nodes">–</b><span>nodes</span></div>
+      <div><b id="k-alerts">–</b><span>alertes</span></div>
+      <div><b id="k-doors">–</b><span>portes</span></div>
+      <div><b id="k-bridge">–</b><span>pont</span></div>
+      <div><b id="simclock">–</b><span>heure simulée</span></div>
+    </div>
+    <div class="linkbox">
+      <input id="host" placeholder="hôte" aria-label="Adresse du broker" />
+      <input id="user" value="front" aria-label="Utilisateur MQTT" />
+      <input id="pass" type="password" value="front-pass" aria-label="Mot de passe MQTT" />
+      <button id="reconnect" type="button">Relier</button>
+      <div id="conn" class="wait">broker…</div>
+    </div>
+  </header>
+  <div class="shell">
+    <section id="plan"></section>
+    <aside>
+      <div class="sheet">
+        <div class="head">
+          <h1 id="title">Choisir un enclos</h1>
+          <p id="species"></p>
+        </div>
+        <canvas id="chart" width="640" height="210"></canvas>
+        <div class="series">
+          <button type="button" data-series="temp_hot">chaud</button>
+          <button type="button" data-series="temp_cold">froid</button>
+          <button type="button" data-series="light">lumière</button>
+          <button type="button" data-series="temp_ambient">ambiance</button>
+        </div>
+        <table>
+          <thead><tr><th>Capteur</th><th>Valeur</th><th>Device</th><th>Reçu</th></tr></thead>
+          <tbody id="readings"></tbody>
+        </table>
+        <form class="cmd" onsubmit="return false">
+          <select id="action">
+            <option value="lamp">lamp</option>
+            <option value="light">light</option>
+            <option value="setpoint">setpoint</option>
+            <option value="safety_cut">safety_cut</option>
+            <option value="interval">interval</option>
+            <option value="reboot">reboot</option>
+            <option value="identify">identify</option>
+          </select>
+          <input id="value" placeholder="on, off, auto, 32, true" />
+          <button id="send" type="button">Envoyer</button>
+        </form>
+        <pre id="log"></pre>
+      </div>
+      <div class="sheet alerts-sheet">
+        <h2>Alertes</h2><label>Afficher <select id="alert-filter"><option value="unacked">Non acquittées</option><option value="active">Actives</option><option value="all">Historique</option></select></label><button id="export" type="button">Exporter le relevé</button>
+        <div id="alerts"></div>
+      </div>
+    </aside>
+  </div>
+  <script src="mqtt.min.js"></script>
+  <script src="site.js"></script>
+  <script src="monitor.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

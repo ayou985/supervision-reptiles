@@ -1,0 +1,51 @@
+'use strict';
+// A lancer avec le broker du projet deja demarre : MQTT_TEST_URL optionnel.
+const mqtt=require('../sim/node_modules/mqtt');
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),assert=require('node:assert/strict');
+const {Simulator}=require('../sim/src/simulator');
+const {createMqttOutput}=require('../sim/src/outputs/mqtt');
+const url=process.env.MQTT_TEST_URL||'mqtt://127.0.0.1:1883';
+const wsUrl=process.env.MQTT_TEST_WS||'ws://127.0.0.1:9001';
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const clients=[],checks=[];let out,dir;
+async function client(user,extra={}){const c=mqtt.connect(url,{username:user,password:user.startsWith('N-')?'node-pass':user+'-pass',clientId:'qa-'+Math.random().toString(16).slice(2),reconnectPeriod:0,...extra});clients.push(c);await new Promise((resolve,reject)=>{c.once('connect',resolve);c.once('error',reject);});return c;}
+const sub=(c,t)=>new Promise((r,j)=>c.subscribe(t,{qos:1},(e)=>e?j(e):r()));
+const pub=(c,t,m)=>new Promise((r,j)=>c.publish(t,JSON.stringify(m),{qos:1,retain:false},e=>e?j(e):r()));
+async function until(fn,timeout=12000){const deadline=Date.now()+timeout;while(!fn()){if(Date.now()>deadline)throw Error('Timeout validation');await sleep(20);}}
+const end=c=>new Promise(r=>c.end(false,r));
+(async()=>{
+  const admin=await client('admin');await sub(admin,'reptile/v1/#');const observed=[];admin.on('message',(t,b)=>{try{observed.push({t,m:JSON.parse(b.toString())});}catch{}});
+  const front=await client('front');const a=await client('N-DES-01');
+  const unique='qa-'+Date.now();
+  await pub(front,'reptile/v1/des/N-DES-01/reading',{qa:unique+'-denied'});await sleep(200);
+  assert(!observed.some(p=>p.m.qa===unique+'-denied'));checks.push('ACL front : publication de lecture refusee');
+  await pub(a,'reptile/v1/des/N-DES-01/reading',{qa:unique+'-own'});await until(()=>observed.some(p=>p.m.qa===unique+'-own'));
+  await pub(a,'reptile/v1/des/N-DES-02/reading',{qa:unique+'-other'});await sleep(200);assert(!observed.some(p=>p.m.qa===unique+'-other'));checks.push('ACL node : propre topic autorise, autre node refuse');
+  const forbidden=[];a.on('message',(t,b)=>forbidden.push(b.toString()));await sub(a,'reptile/v1/des/N-DES-02/reading');await pub(admin,'reptile/v1/des/N-DES-02/reading',{qa:unique+'-secret'});await sleep(200);assert(!forbidden.some(s=>s.includes(unique+'-secret')));checks.push('ACL node : lecture des autres nodes refusee');
+  let denied=false;try{const bad=await client('front',{password:'incorrect'});await end(bad);}catch{denied=true;}assert(denied);checks.push('Authentification : mot de passe incorrect refuse');
+  const ws=mqtt.connect(wsUrl,{username:'front',password:'front-pass',clientId:unique+'-ws',reconnectPeriod:0});clients.push(ws);
+  await new Promise((r,j)=>{ws.once('connect',r);ws.once('error',j);});await sub(ws,'reptile/v1/des/N-DES-01/event');
+  let door=null;ws.on('message',(t,b)=>{const m=JSON.parse(b.toString());if(m.qa===unique+'-door')door=Date.now();});const sent=Date.now();
+  await pub(a,'reptile/v1/des/N-DES-01/event',{qa:unique+'-door',type:'door',state:'open'});await until(()=>door!==null);
+  const wsDelay=door-sent;assert(wsDelay<2000);checks.push('TCP -> WebSocket : porte recue en moins de 2 s');
+  const id=unique+'-persistent';let persistent=await client('front',{clientId:id,clean:false});await sub(persistent,'reptile/v1/des/N-DES-02/event');await end(persistent);
+  await pub(admin,'reptile/v1/des/N-DES-02/event',{qa:unique+'-queued'});persistent=mqtt.connect(url,{username:'front',password:'front-pass',clientId:id,clean:false,reconnectPeriod:0});clients.push(persistent);let queued=false;
+  persistent.on('message',(t,b)=>{if(b.toString().includes(unique+'-queued'))queued=true;});await until(()=>queued);checks.push('Session persistante : evenement recu apres deconnexion/reconnexion');
+  dir=fs.mkdtempSync(path.join(os.tmpdir(),'reptile-integration-'));
+  const sim=new Simulator({seed:42,scenario:'normal',start:Date.parse('2026-10-08T07:45:00+02:00')});let adapterClient;
+  out=createMqttOutput({MQTT_URL:url,MQTT_CLIENT_ID:unique+'-bridge',MQTT_SPOOL_DIR:dir},{connect:(u,o)=>(adapterClient=mqtt.connect(u,o))});out.start(sim);
+  await until(()=>adapterClient.connected);await sleep(100);sim.emitAllBoots();sim.advance(60);await until(()=>out.diagnostics().buffered===0);
+  let commandCalls=0;const original=sim.handleCommand.bind(sim);sim.handleCommand=cmd=>{commandCalls++;return original(cmd);};
+  const cmd={v:1,id:unique+'-command',target:'N-DES-01',action:'identify',createdAt:Date.now(),expiresAt:Date.now()+8000};
+  await pub(front,'reptile/v1/des/N-DES-01/cmd',cmd);await until(()=>observed.some(p=>p.m.cmdId===cmd.id));await pub(front,'reptile/v1/des/N-DES-01/cmd',cmd);await sleep(100);assert.equal(commandCalls,1);
+  const old={...cmd,id:unique+'-expired',createdAt:Date.now()-10000,expiresAt:Date.now()-2000};await pub(front,'reptile/v1/des/N-DES-01/cmd',old);await until(()=>observed.some(p=>p.m.cmdId===old.id&&p.m.detail==='expired'));assert.equal(commandCalls,1);checks.push('Commandes : ACK correle, doublon non execute, commande expiree refusee');
+  const stream=out.diagnostics().streamId;let offlineWill=false;admin.on('message',(t,b)=>{try{const m=JSON.parse(b.toString());if(t.endsWith('/bridge/status')&&m.reason==='lwt'&&!m.online)offlineWill=true;}catch{}});
+  adapterClient.stream.destroy();await until(()=>!adapterClient.connected);await until(()=>offlineWill);checks.push('Last Will observe apres rupture du transport');
+  const first=sim.seq+1, offlineStart=Date.now();sim.advance(36000);const last=sim.seq, generated=last-first+1;
+  assert.equal(out.diagnostics().buffered,generated);const received=new Set();for(const p of observed)if(p.m.streamId===stream&&p.m.seq>=first)received.add(p.m.seq);
+  admin.on('message',(t,b)=>{try{const m=JSON.parse(b.toString());if(m.streamId===stream&&m.seq>=first&&m.seq<=last)received.add(m.seq);}catch{}});
+  await until(()=>out.diagnostics().buffered===0&&received.size===generated,90000);
+  assert.equal(received.size,generated);checks.push('Coupure : aucun message perdu sur un trafic equivalent a 10 min reelles a SPEED=60');
+  const result={broker:'Mosquitto 2.0.18 natif',checkedAt:new Date().toISOString(),checks,wsTransportDoorDelayMs:wsDelay,offlineTrafficMessages:generated,offlineTrafficSimulatedS:36000,outageAndReplayElapsedMs:Date.now()-offlineStart,missingMessages:generated-received.size,note:'La coupure reelle dure moins de 10 min ; 10 min de trafic SPEED=60 sont generes par avance acceleree. Compose non execute.'};
+  fs.mkdirSync(path.resolve(__dirname,'../docs/validation'),{recursive:true});fs.writeFileSync(path.resolve(__dirname,'../docs/validation/integration.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
+})().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(out)await out.stop();for(const c of clients)try{c.end(true);}catch{}if(dir)fs.rmSync(dir,{recursive:true,force:true});});

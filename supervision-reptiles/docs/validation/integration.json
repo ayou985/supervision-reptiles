@@ -1,0 +1,21 @@
+{
+  "broker": "Mosquitto 2.0.18 natif",
+  "checkedAt": "2026-10-08T21:15:25.653Z",
+  "checks": [
+    "ACL front : publication de lecture refusee",
+    "ACL node : propre topic autorise, autre node refuse",
+    "ACL node : lecture des autres nodes refusee",
+    "Authentification : mot de passe incorrect refuse",
+    "TCP -> WebSocket : porte recue en moins de 2 s",
+    "Session persistante : evenement recu apres deconnexion/reconnexion",
+    "Commandes : ACK correle, doublon non execute, commande expiree refusee",
+    "Last Will observe apres rupture du transport",
+    "Coupure : aucun message perdu sur un trafic equivalent a 10 min reelles a SPEED=60"
+  ],
+  "wsTransportDoorDelayMs": 1,
+  "offlineTrafficMessages": 74462,
+  "offlineTrafficSimulatedS": 36000,
+  "outageAndReplayElapsedMs": 3601,
+  "missingMessages": 0,
+  "note": "La coupure reelle dure moins de 10 min ; 10 min de trafic SPEED=60 sont generes par avance acceleree. Compose non execute."
+}

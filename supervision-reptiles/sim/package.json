@@ -1,0 +1,21 @@
+{
+  "name": "reptile-center-sim",
+  "version": "1.0.0",
+  "description": "Simulateur de capteurs d'un centre de rehabilitation pour reptiles, avec adaptateur MQTT",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:json": "node src/index.js --format json",
+    "start:mqtt": "node src/index.js --output both",
+    "chaos": "node src/index.js --scenario chaos",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "mqtt": "5.16.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

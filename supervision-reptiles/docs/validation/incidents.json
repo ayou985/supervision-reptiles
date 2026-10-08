@@ -1,0 +1,145 @@
+{
+  "scenario": "incidents",
+  "seed": 42,
+  "start": "2026-10-08T05:45:00.000Z",
+  "stepS": 1,
+  "messages": 140194,
+  "method": "Rejeu deterministe des messages du modele original dans le moteur utilise par le front ; delais en secondes simulees.",
+  "rows": [
+    {
+      "id": "porte",
+      "label": "Porte DES-02 bloquee ouverte",
+      "offset": 25,
+      "key": "door:N-DES-02",
+      "node": "N-DES-02",
+      "startedAt": 1791439800000,
+      "detectedAt": 1791439980000,
+      "delayS": 180,
+      "alert": "N-DES-02 porte ouverte depuis au moins 3 min"
+    },
+    {
+      "id": "sonde",
+      "label": "Sonde chaude TRO-03 debranchee",
+      "offset": 40,
+      "key": "disc:N-TRO-03:temp_hot",
+      "node": "N-TRO-03",
+      "startedAt": 1791440700000,
+      "detectedAt": 1791440701000,
+      "delayS": 1,
+      "alert": "N-TRO-03 temp_hot deconnectee (-127)"
+    },
+    {
+      "id": "lampe",
+      "label": "Lampe DES-04 : lumiere insuffisante",
+      "offset": 60,
+      "key": "light:N-DES-04",
+      "node": "N-DES-04",
+      "startedAt": 1791441900000,
+      "detectedAt": 1791441903000,
+      "delayS": 3,
+      "alert": "N-DES-04 lumiere insuffisante : 5642 lx"
+    },
+    {
+      "id": "lampe-thermique",
+      "label": "Lampe DES-04 : point chaud bas",
+      "offset": 60,
+      "key": "hotlow:N-DES-04",
+      "node": "N-DES-04",
+      "startedAt": 1791441900000,
+      "detectedAt": 1791442023000,
+      "delayS": 123,
+      "alert": "N-DES-04 point chaud 38.625 C sous consigne 45 C"
+    },
+    {
+      "id": "thermostat",
+      "label": "Thermostat TRO-05 colle",
+      "offset": 90,
+      "key": "hothigh:N-TRO-05",
+      "node": "N-TRO-05",
+      "startedAt": 1791443700000,
+      "detectedAt": 1791444228000,
+      "delayS": 528,
+      "alert": "N-TRO-05 point chaud 42.1875 C au-dessus de 37 C"
+    },
+    {
+      "id": "node",
+      "label": "N-QUA-03 hors ligne",
+      "offset": 105,
+      "key": "mute:N-QUA-03",
+      "node": "N-QUA-03",
+      "startedAt": 1791444600000,
+      "detectedAt": 1791445180000,
+      "delayS": 580,
+      "alert": "N-QUA-03 node muet"
+    },
+    {
+      "id": "por",
+      "label": "Sonde froide SOI-02 : POR 85 C",
+      "offset": 120,
+      "key": "por:N-SOI-02:temp_cold",
+      "node": "N-SOI-02",
+      "startedAt": 1791445500000,
+      "detectedAt": 1791445577000,
+      "delayS": 77,
+      "alert": "N-SOI-02 temp_cold valeur POR 85 C"
+    },
+    {
+      "id": "secteur",
+      "label": "Coupure secteur QUA",
+      "offset": 160,
+      "key": "mute:N-QUA-01",
+      "node": "N-QUA-01",
+      "startedAt": 1791447900000,
+      "detectedAt": 1791448491000,
+      "delayS": 591,
+      "alert": "N-QUA-01 node muet"
+    },
+    {
+      "id": "horloge",
+      "label": "Horloge TRO-06 en derive",
+      "offset": 0,
+      "key": "clock:N-TRO-06",
+      "node": "N-TRO-06",
+      "startedAt": 1791438300000,
+      "detectedAt": 1791440114000,
+      "delayS": 1814,
+      "alert": "N-TRO-06 horloge device decalee de plus de 2 min"
+    },
+    {
+      "id": "pile",
+      "label": "Pile EXT-02 initialement faible",
+      "offset": 0,
+      "key": "batt:N-EXT-02",
+      "node": "N-EXT-02",
+      "startedAt": 1791438300000,
+      "detectedAt": 1791438315000,
+      "delayS": 15,
+      "alert": "N-EXT-02 pile faible : 14 %"
+    },
+    {
+      "id": "extinction",
+      "label": "EXT-02 eteint apres vidage de la pile",
+      "offset": 200,
+      "key": "mute:N-EXT-02",
+      "node": "N-EXT-02",
+      "startedAt": 1791450300000,
+      "detectedAt": 1791454516000,
+      "delayS": 4216,
+      "alert": "N-EXT-02 node muet",
+      "physicalDeathAt": 1791450951000,
+      "delaySincePhysicalDeathS": 3565
+    },
+    {
+      "id": "intrusion",
+      "label": "Ouverture nocturne local nourriture",
+      "offset": 1132.2,
+      "key": "night:N-DOOR-FEED:",
+      "prefix": true,
+      "node": "N-DOOR-FEED",
+      "startedAt": 1791506232000,
+      "detectedAt": 1791506232000,
+      "delayS": 0,
+      "alert": "N-DOOR-FEED ouverture hors horaires"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"name":"BH1750 reglable","author":"supervision-reptiles","pins":["VCC","GND","SDA","SCL"],"controls":[{"id":"lux","label":"Eclairement (lx)","type":"range","min":0,"max":100000,"step":10}]}

@@ -1,0 +1,22 @@
+{
+  "sim/src/simulator.js": {
+    "original_sha256": "efd4fc600820c3cf6ce9ccecfeb28723811d88f0ed42a9171164bc5bfd575e9a",
+    "verified_sha256": "efd4fc600820c3cf6ce9ccecfeb28723811d88f0ed42a9171164bc5bfd575e9a",
+    "identical": true
+  },
+  "sim/src/scenarios.js": {
+    "original_sha256": "efc7ed94ddeed2667ebf18f14900c4acb0872ea2c963a87e8b01ecee6375a944",
+    "verified_sha256": "efc7ed94ddeed2667ebf18f14900c4acb0872ea2c963a87e8b01ecee6375a944",
+    "identical": true
+  },
+  "sim/src/facility.js": {
+    "original_sha256": "a5cac94904e9f0e87654a1f221c2bb824742efc5aa0609010e022c339a80b127",
+    "verified_sha256": "a5cac94904e9f0e87654a1f221c2bb824742efc5aa0609010e022c339a80b127",
+    "identical": true
+  },
+  "sim/src/species.js": {
+    "original_sha256": "b6910acfd737b557bfba541102101e65c78d09fe7f145fa3ab75dc2a8a38b178",
+    "verified_sha256": "b6910acfd737b557bfba541102101e65c78d09fe7f145fa3ab75dc2a8a38b178",
+    "identical": true
+  }
+}

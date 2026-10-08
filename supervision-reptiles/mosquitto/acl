@@ -1,0 +1,213 @@
+# Roles de laboratoire : pont, front, administrateur et chaque node.
+user sim
+topic write reptile/v1/+/+/reading
+topic write reptile/v1/+/+/event
+topic write reptile/v1/+/+/status
+topic write reptile/v1/+/+/ack
+topic write reptile/v1/bridge/status
+topic write reptile/v1/bridge/clock
+topic read reptile/v1/+/+/cmd
+
+user front
+topic read reptile/v1/#
+topic write reptile/v1/+/+/cmd
+
+user admin
+topic readwrite #
+topic read $SYS/#
+
+user N-ROOM-DES
+topic read reptile/v1/des/N-ROOM-DES/cmd
+topic write reptile/v1/des/N-ROOM-DES/reading
+topic write reptile/v1/des/N-ROOM-DES/event
+topic write reptile/v1/des/N-ROOM-DES/status
+topic write reptile/v1/des/N-ROOM-DES/ack
+
+user N-ROOM-TRO
+topic read reptile/v1/tro/N-ROOM-TRO/cmd
+topic write reptile/v1/tro/N-ROOM-TRO/reading
+topic write reptile/v1/tro/N-ROOM-TRO/event
+topic write reptile/v1/tro/N-ROOM-TRO/status
+topic write reptile/v1/tro/N-ROOM-TRO/ack
+
+user N-ROOM-QUA
+topic read reptile/v1/qua/N-ROOM-QUA/cmd
+topic write reptile/v1/qua/N-ROOM-QUA/reading
+topic write reptile/v1/qua/N-ROOM-QUA/event
+topic write reptile/v1/qua/N-ROOM-QUA/status
+topic write reptile/v1/qua/N-ROOM-QUA/ack
+
+user N-ROOM-SOI
+topic read reptile/v1/soi/N-ROOM-SOI/cmd
+topic write reptile/v1/soi/N-ROOM-SOI/reading
+topic write reptile/v1/soi/N-ROOM-SOI/event
+topic write reptile/v1/soi/N-ROOM-SOI/status
+topic write reptile/v1/soi/N-ROOM-SOI/ack
+
+user N-DES-01
+topic read reptile/v1/des/N-DES-01/cmd
+topic write reptile/v1/des/N-DES-01/reading
+topic write reptile/v1/des/N-DES-01/event
+topic write reptile/v1/des/N-DES-01/status
+topic write reptile/v1/des/N-DES-01/ack
+
+user N-DES-02
+topic read reptile/v1/des/N-DES-02/cmd
+topic write reptile/v1/des/N-DES-02/reading
+topic write reptile/v1/des/N-DES-02/event
+topic write reptile/v1/des/N-DES-02/status
+topic write reptile/v1/des/N-DES-02/ack
+
+user N-DES-03
+topic read reptile/v1/des/N-DES-03/cmd
+topic write reptile/v1/des/N-DES-03/reading
+topic write reptile/v1/des/N-DES-03/event
+topic write reptile/v1/des/N-DES-03/status
+topic write reptile/v1/des/N-DES-03/ack
+
+user N-DES-04
+topic read reptile/v1/des/N-DES-04/cmd
+topic write reptile/v1/des/N-DES-04/reading
+topic write reptile/v1/des/N-DES-04/event
+topic write reptile/v1/des/N-DES-04/status
+topic write reptile/v1/des/N-DES-04/ack
+
+user N-DES-05
+topic read reptile/v1/des/N-DES-05/cmd
+topic write reptile/v1/des/N-DES-05/reading
+topic write reptile/v1/des/N-DES-05/event
+topic write reptile/v1/des/N-DES-05/status
+topic write reptile/v1/des/N-DES-05/ack
+
+user N-DES-06
+topic read reptile/v1/des/N-DES-06/cmd
+topic write reptile/v1/des/N-DES-06/reading
+topic write reptile/v1/des/N-DES-06/event
+topic write reptile/v1/des/N-DES-06/status
+topic write reptile/v1/des/N-DES-06/ack
+
+user N-TRO-01
+topic read reptile/v1/tro/N-TRO-01/cmd
+topic write reptile/v1/tro/N-TRO-01/reading
+topic write reptile/v1/tro/N-TRO-01/event
+topic write reptile/v1/tro/N-TRO-01/status
+topic write reptile/v1/tro/N-TRO-01/ack
+
+user N-TRO-02
+topic read reptile/v1/tro/N-TRO-02/cmd
+topic write reptile/v1/tro/N-TRO-02/reading
+topic write reptile/v1/tro/N-TRO-02/event
+topic write reptile/v1/tro/N-TRO-02/status
+topic write reptile/v1/tro/N-TRO-02/ack
+
+user N-TRO-03
+topic read reptile/v1/tro/N-TRO-03/cmd
+topic write reptile/v1/tro/N-TRO-03/reading
+topic write reptile/v1/tro/N-TRO-03/event
+topic write reptile/v1/tro/N-TRO-03/status
+topic write reptile/v1/tro/N-TRO-03/ack
+
+user N-TRO-04
+topic read reptile/v1/tro/N-TRO-04/cmd
+topic write reptile/v1/tro/N-TRO-04/reading
+topic write reptile/v1/tro/N-TRO-04/event
+topic write reptile/v1/tro/N-TRO-04/status
+topic write reptile/v1/tro/N-TRO-04/ack
+
+user N-TRO-05
+topic read reptile/v1/tro/N-TRO-05/cmd
+topic write reptile/v1/tro/N-TRO-05/reading
+topic write reptile/v1/tro/N-TRO-05/event
+topic write reptile/v1/tro/N-TRO-05/status
+topic write reptile/v1/tro/N-TRO-05/ack
+
+user N-TRO-06
+topic read reptile/v1/tro/N-TRO-06/cmd
+topic write reptile/v1/tro/N-TRO-06/reading
+topic write reptile/v1/tro/N-TRO-06/event
+topic write reptile/v1/tro/N-TRO-06/status
+topic write reptile/v1/tro/N-TRO-06/ack
+
+user N-QUA-01
+topic read reptile/v1/qua/N-QUA-01/cmd
+topic write reptile/v1/qua/N-QUA-01/reading
+topic write reptile/v1/qua/N-QUA-01/event
+topic write reptile/v1/qua/N-QUA-01/status
+topic write reptile/v1/qua/N-QUA-01/ack
+
+user N-QUA-02
+topic read reptile/v1/qua/N-QUA-02/cmd
+topic write reptile/v1/qua/N-QUA-02/reading
+topic write reptile/v1/qua/N-QUA-02/event
+topic write reptile/v1/qua/N-QUA-02/status
+topic write reptile/v1/qua/N-QUA-02/ack
+
+user N-QUA-03
+topic read reptile/v1/qua/N-QUA-03/cmd
+topic write reptile/v1/qua/N-QUA-03/reading
+topic write reptile/v1/qua/N-QUA-03/event
+topic write reptile/v1/qua/N-QUA-03/status
+topic write reptile/v1/qua/N-QUA-03/ack
+
+user N-QUA-04
+topic read reptile/v1/qua/N-QUA-04/cmd
+topic write reptile/v1/qua/N-QUA-04/reading
+topic write reptile/v1/qua/N-QUA-04/event
+topic write reptile/v1/qua/N-QUA-04/status
+topic write reptile/v1/qua/N-QUA-04/ack
+
+user N-SOI-01
+topic read reptile/v1/soi/N-SOI-01/cmd
+topic write reptile/v1/soi/N-SOI-01/reading
+topic write reptile/v1/soi/N-SOI-01/event
+topic write reptile/v1/soi/N-SOI-01/status
+topic write reptile/v1/soi/N-SOI-01/ack
+
+user N-SOI-02
+topic read reptile/v1/soi/N-SOI-02/cmd
+topic write reptile/v1/soi/N-SOI-02/reading
+topic write reptile/v1/soi/N-SOI-02/event
+topic write reptile/v1/soi/N-SOI-02/status
+topic write reptile/v1/soi/N-SOI-02/ack
+
+user N-SOI-03
+topic read reptile/v1/soi/N-SOI-03/cmd
+topic write reptile/v1/soi/N-SOI-03/reading
+topic write reptile/v1/soi/N-SOI-03/event
+topic write reptile/v1/soi/N-SOI-03/status
+topic write reptile/v1/soi/N-SOI-03/ack
+
+user N-EXT-01
+topic read reptile/v1/ext/N-EXT-01/cmd
+topic write reptile/v1/ext/N-EXT-01/reading
+topic write reptile/v1/ext/N-EXT-01/event
+topic write reptile/v1/ext/N-EXT-01/status
+topic write reptile/v1/ext/N-EXT-01/ack
+
+user N-EXT-02
+topic read reptile/v1/ext/N-EXT-02/cmd
+topic write reptile/v1/ext/N-EXT-02/reading
+topic write reptile/v1/ext/N-EXT-02/event
+topic write reptile/v1/ext/N-EXT-02/status
+topic write reptile/v1/ext/N-EXT-02/ack
+
+user N-DOOR-MAIN
+topic read reptile/v1/bat/N-DOOR-MAIN/cmd
+topic write reptile/v1/bat/N-DOOR-MAIN/reading
+topic write reptile/v1/bat/N-DOOR-MAIN/event
+topic write reptile/v1/bat/N-DOOR-MAIN/status
+topic write reptile/v1/bat/N-DOOR-MAIN/ack
+
+user N-DOOR-SAS
+topic read reptile/v1/bat/N-DOOR-SAS/cmd
+topic write reptile/v1/bat/N-DOOR-SAS/reading
+topic write reptile/v1/bat/N-DOOR-SAS/event
+topic write reptile/v1/bat/N-DOOR-SAS/status
+topic write reptile/v1/bat/N-DOOR-SAS/ack
+
+user N-DOOR-FEED
+topic read reptile/v1/bat/N-DOOR-FEED/cmd
+topic write reptile/v1/bat/N-DOOR-FEED/reading
+topic write reptile/v1/bat/N-DOOR-FEED/event
+topic write reptile/v1/bat/N-DOOR-FEED/status
+topic write reptile/v1/bat/N-DOOR-FEED/ack

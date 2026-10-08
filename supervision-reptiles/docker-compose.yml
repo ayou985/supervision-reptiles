@@ -1,0 +1,55 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/acl:/mosquitto/config/acl:ro
+      - ./mosquitto/nodes.txt:/mosquitto/config/nodes.txt:ro
+      - ./mosquitto/entrypoint.sh:/entrypoint.sh:ro
+      - mosq-data:/mosquitto/data
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    environment:
+      MQTT_SIM_PASSWORD: ${MQTT_SIM_PASSWORD:-sim-pass}
+      MQTT_FRONT_PASSWORD: ${MQTT_FRONT_PASSWORD:-front-pass}
+      MQTT_ADMIN_PASSWORD: ${MQTT_ADMIN_PASSWORD:-admin-pass}
+      MQTT_NODE_PASSWORD: ${MQTT_NODE_PASSWORD:-node-pass}
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_pub -h 127.0.0.1 -u admin -P \"$$MQTT_ADMIN_PASSWORD\" -t reptile/v1/health -m ok -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+  simulator:
+    build: ./sim
+    environment:
+      MQTT_URL: mqtt://mosquitto:1883
+      MQTT_USERNAME: sim
+      MQTT_PASSWORD: ${MQTT_SIM_PASSWORD:-sim-pass}
+      MQTT_CLIENT_ID: sim-adapter
+      MQTT_TOPIC_ROOT: reptile/v1
+      MQTT_SPOOL_DIR: /app/data
+      OUTPUT: both
+      SCENARIO: incidents
+      SPEED: ${SPEED:-60}
+      SEED: "42"
+      TZ: Europe/Paris
+    volumes:
+      - sim-data:/app/data
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+  front:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./front:/usr/share/nginx/html:ro
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+volumes:
+  mosq-data:
+  sim-data:
